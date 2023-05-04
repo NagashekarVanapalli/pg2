@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sleep duration - alcohol consumption</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <h1>Sleep duration change with respect to alcohol consumption...</h1>
+  <div id="plot"></div>
+
+  <script>
+    var data = [{"Sleep_duration": "5.0","value": 5},{ "Sleep_duration": "5.5", "value": 2},  { "Sleep_duration": "6", "value": 19},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 76},{ "Sleep_duration": "7.5", "value": 56}, 
+    { "Sleep_duration": "8", "value": 56},  {"Sleep_duration": "8.5","value": 14},{"Sleep_duration": "9","value": 14},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 4}      ];
+    var data1 = [{"Sleep_duration": "5.0","value": 2},{ "Sleep_duration": "5.5", "value": 0},  { "Sleep_duration": "6", "value": 4},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 17},{ "Sleep_duration": "7.5", "value": 7}, 
+    { "Sleep_duration": "8", "value": 12},  {"Sleep_duration": "8.5","value": 7},{"Sleep_duration": "9","value": 3},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 2}      ];
+    var data2 = [{"Sleep_duration": "5.0","value": 0},{ "Sleep_duration": "5.5", "value": 0},  { "Sleep_duration": "6", "value": 1},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 12},{ "Sleep_duration": "7.5", "value": 13}, 
+    { "Sleep_duration": "8", "value": 7},  {"Sleep_duration": "8.5","value": 2},{"Sleep_duration": "9","value": 2},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 0}      ];
+    var data3 = [{"Sleep_duration": "5.0","value": 0},{ "Sleep_duration": "5.5", "value": 0},  { "Sleep_duration": "6", "value": 0},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 17},{ "Sleep_duration": "7.5", "value": 7}, 
+    { "Sleep_duration": "8", "value": 13},  {"Sleep_duration": "8.5","value": 3},{"Sleep_duration": "9","value": 5},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 0}      ];
+    var data4 = [{"Sleep_duration": "5.0","value": 1},{ "Sleep_duration": "5.5", "value": 0},  { "Sleep_duration": "6", "value": 1},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 10},{ "Sleep_duration": "7.5", "value": 3}, 
+    { "Sleep_duration": "8", "value": 5},  {"Sleep_duration": "8.5","value": 0},{"Sleep_duration": "9","value": 1},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 2}      ];
+    var data5 = [{"Sleep_duration": "5.0","value": 0},{ "Sleep_duration": "5.5", "value": 0},  { "Sleep_duration": "6", "value": 6},
+    { "Sleep_duration": "6.5", "value": 0},  { "Sleep_duration": "7", "value": 16},{ "Sleep_duration": "7.5", "value": 1}, 
+    { "Sleep_duration": "8", "value": 6},  {"Sleep_duration": "8.5","value": 0},{"Sleep_duration": "9","value": 1},  
+    {"Sleep_duration": "9.5","value": 0},{"Sleep_duration": "10","value": 0}      ];
+    
+    var width = 500;
+    var height = 300;
+    var margin = {top: 20,right: 20,bottom: 50,left: 50};
+
+    var innerWidth = width - margin.left - margin.right;
+    var innerHeight = height - margin.top - margin.bottom;
+
+d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 0");
+    var svg = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+
+    var gradient = svg.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#008000")
+              .attr("stop-opacity", 1);
+              
+      gradient.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      
+      var xScale = d3.scaleBand()
+        .domain(data.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+    svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .call(d3.axisLeft(yScale));
+
+    svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text("Alcohol Consumption at 0");
+
+svg.append("text")
+    .attr("transform",
+          "translate(" + (width/2) + " ," +
+                         (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text("Sleep Duration in hours");
+
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Number of people");
+svg.selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "#007bff")
+        .attr("fill", "url(#bar-gradient)");
+    // plot1
+    d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 1");
+    var svg1 = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    var gradient1 = svg1.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient1")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient1.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#008000")
+              .attr("stop-opacity", 1);
+              
+      gradient1.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      var xScale = d3.scaleBand()
+        .domain(data1.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data1, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg1.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+      svg1.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(d3.axisLeft(yScale));
+
+      svg1.selectAll(".bar")
+        .data(data1)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "url(#bar-gradient1)");
+    
+    // plot2
+    d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 2");
+    var svg2 = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+        var gradient2 = svg2.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient2")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient2.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#0000FF")
+              .attr("stop-opacity", 1);
+              
+      gradient2.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      var xScale = d3.scaleBand()
+        .domain(data2.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data2, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg2.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+      svg2.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(d3.axisLeft(yScale));
+
+      svg2.selectAll(".bar")
+        .data(data2)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "url(#bar-gradient2)");
+    
+    
+    // plot3
+    d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 3");
+    var svg3 = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+        var gradient3 = svg3.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient3")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient3.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#00008B")
+              .attr("stop-opacity", 1);
+              
+      gradient3.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      var xScale = d3.scaleBand()
+        .domain(data3.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data3, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg3.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+      svg3.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(d3.axisLeft(yScale));
+
+      svg3.selectAll(".bar")
+        .data(data3)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "url(#bar-gradient3)");
+    
+    // plot4
+    d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 4");
+    var svg4 = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+        var gradient4 = svg4.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient4")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient4.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#FFA500")
+              .attr("stop-opacity", 1);
+              
+      gradient4.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      var xScale = d3.scaleBand()
+        .domain(data4.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data4, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg4.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+      svg4.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(d3.axisLeft(yScale));
+
+      svg4.selectAll(".bar")
+        .data(data4)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "url(#bar-gradient4)");
+    
+    // plot5
+    d3.select("#plot")
+  .append("p")
+  .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+  .text("Alcohol Consumption at 5");
+    var svg5 = d3.select("#plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+        var gradient5 = svg5.append("defs")
+                        .append("linearGradient")
+                        .attr("id", "bar-gradient5")
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "0%")
+                        .attr("y2", "100%");
+    gradient5.append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "#FF0000")
+              .attr("stop-opacity", 1);
+              
+      gradient5.append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "#F5F5F5")
+              .attr("stop-opacity", 1);
+      var xScale = d3.scaleBand()
+        .domain(data5.map(function(d) { return d.Sleep_duration; }))
+        .range([0, innerWidth])
+        .padding(0.1);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data5, function(d) { return d.value; })])
+        .range([innerHeight, 0]);
+
+      svg5.append("g")
+        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+        .call(d3.axisBottom(xScale));
+
+      svg5.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(d3.axisLeft(yScale));
+
+      svg5.selectAll(".bar")
+        .data(data5)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return margin.left + xScale(d.Sleep_duration); })
+        .attr("y", function(d) { return margin.top + yScale(d.value); })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function(d) { return innerHeight - yScale(d.value); })
+        .attr("fill", "url(#bar-gradient5)");
+    
+    
+  </script>
+</body>
+</html>
